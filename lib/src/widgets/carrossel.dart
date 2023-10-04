@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 class Carrossel extends StatelessWidget {
@@ -5,10 +6,12 @@ class Carrossel extends StatelessWidget {
     super.key,
     required this.childrens,
     required this.currentIndex,
+    required this.onChanged,
   });
 
   final List<CarrosselItem> childrens;
   final int currentIndex;
+  final void Function(int index) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +21,13 @@ class Carrossel extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 10),
         children: childrens
-            .map(
-              (e) => _CarrosselItem(
-                key: UniqueKey(),
-                title: e.title,
-                selected: childrens.indexOf(e) == 2,
+            .mapIndexed(
+              (index, e) => InkWell(
+                onTap: () => onChanged(index),
+                child: _CarrosselItem(
+                  title: e.title,
+                  selected: index == currentIndex,
+                ),
               ),
             )
             .toList(),
@@ -38,9 +43,8 @@ class CarrosselItem {
 
 class _CarrosselItem extends StatelessWidget {
   const _CarrosselItem({
-    super.key,
     required this.title,
-    this.selected = false,
+    required this.selected,
   });
 
   final String title;
@@ -48,19 +52,28 @@ class _CarrosselItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        key: ValueKey(selected),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: selected ? Colors.red : Colors.white,
-              width: 2,
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 5),
+            child: Text(
+              title,
+              style: TextStyle(
+                fontWeight: selected ? FontWeight.bold : null,
+              ),
             ),
           ),
-        ),
-        child: Text(title),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 600),
+            width: selected ? 30 : 0,
+            curve: Curves.decelerate,
+            height: 3,
+            color: const Color(0xFFFCEB67),
+          ),
+        ],
       ),
     );
   }

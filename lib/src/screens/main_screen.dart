@@ -9,7 +9,14 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final carroseelKey = GlobalKey();
+  final _carroseelKey = GlobalKey();
+  var _whiskysCurrentIndex = 0;
+
+  void _changeWhiskysCurrentIndex(int index) {
+    setState(() {
+      _whiskysCurrentIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,26 +45,25 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
             ),
-            Carrossel(
-              key: carroseelKey,
-              currentIndex: 1,
-              childrens: const [
-                CarrosselItem("Vinhos"),
-                CarrosselItem("Vinhos"),
-                CarrosselItem("Vinhos"),
-                CarrosselItem("Vinhos"),
-                CarrosselItem("Vinhos"),
-                CarrosselItem("Vinhos"),
-                CarrosselItem("Vinhos"),
-                CarrosselItem("Vinhos"),
-                CarrosselItem("Vinhos"),
-                CarrosselItem("Vinhos"),
-                CarrosselItem("Vinhos"),
-                CarrosselItem("Vinhos"),
-                CarrosselItem("Vinhos"),
-                CarrosselItem("Vinhos"),
-                CarrosselItem("Vinhos"),
-              ],
+            Container(
+              margin: const EdgeInsets.only(top: 10),
+              child: Carrossel(
+                key: _carroseelKey,
+                currentIndex: _whiskysCurrentIndex,
+                onChanged: _changeWhiskysCurrentIndex,
+                childrens: const [
+                  CarrosselItem("Vinhos"),
+                  CarrosselItem("Vinhos"),
+                  CarrosselItem("Vinhos"),
+                  CarrosselItem("Vinhos"),
+                  CarrosselItem("Vinhos"),
+                  CarrosselItem("Vinhos"),
+                  CarrosselItem("Vinhos"),
+                  CarrosselItem("Vinhos"),
+                  CarrosselItem("Vinhos"),
+                  CarrosselItem("Vinhos"),
+                ],
+              ),
             ),
           ],
         ),
