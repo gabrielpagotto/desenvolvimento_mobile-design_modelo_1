@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_modelo_1/src/widgets/card_carrossel.dart';
 import 'package:mobile_modelo_1/src/widgets/carrossel.dart';
 
 class MainScreen extends StatefulWidget {
@@ -32,11 +33,17 @@ class _MainScreenState extends State<MainScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [const Icon(Icons.menu, size: 30), IconButton(onPressed: () => print('clicas'), icon: const Icon(Icons.search))],
+                children: [
+                  const Icon(Icons.menu, size: 30),
+                  IconButton(
+                      onPressed: () => print('clicas'),
+                      icon: const Icon(Icons.search))
+                ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20).copyWith(top: 40),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20).copyWith(top: 40),
               child: const Align(
                 alignment: Alignment.topLeft,
                 child: Text(
@@ -65,6 +72,15 @@ class _MainScreenState extends State<MainScreen> {
                 ],
               ),
             ),
+            Container(
+                margin: const EdgeInsets.only(top: 10),
+                child: CardCarrossel(
+                  image:
+                      'https://www.bebidasfamosas.com.br/wp-content/uploads/2019/10/whisky-johnnie-walker-red-label-1l.jpg',
+                  rating: 4.5,
+                  title: 'Whisky Johnnie Walker Red Label 1L',
+                  price: 79.90,
+                )),
           ],
         ),
       ),
