@@ -42,6 +42,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
     final mediaQuery = MediaQuery.of(context);
     final size = mediaQuery.size;
     return Material(
+      color: Colors.black,
       child: Stack(
         children: [
           Column(

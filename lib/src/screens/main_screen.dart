@@ -45,6 +45,20 @@ class _MainScreenState extends State<MainScreen> {
     return bebidaMock.where((element) => element.categoria == _categoriaAtual.id).toList();
   }
 
+  (Categoria, List<Bebida>) get extra {
+    late Categoria categoria;
+    late List<Bebida> bebidas;
+    for (final cat in categoriaMock) {
+      bebidas = bebidaMock.where((element) => element.categoria == cat.id).toList();
+      if (cat.id == _categoriaAtual.id || bebidas.isEmpty) {
+        continue;
+      }
+      categoria = cat;
+      break;
+    }
+    return (categoria, bebidas);
+  }
+
   void _irParaDetalhes(Bebida bebida) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailsScreen(bebida: bebida)));
   }
@@ -192,6 +206,78 @@ class _MainScreenState extends State<MainScreen> {
                           },
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                        child: Text(
+                          extra.$1.nome,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: extra.$2
+                            .map(
+                              (e) => InkWell(
+                                onTap: () => _irParaDetalhes(e),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 10),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width: 80,
+                                        height: 80,
+                                        child: Hero(
+                                          tag: BebidaUtils.createBebidaTag(e),
+                                          child: Image.network(e.imagem),
+                                        ),
+                                      ),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              const Icon(Icons.star, color: Colors.yellow),
+                                              const SizedBox(width: 10),
+                                              Text(
+                                                '${e.nota}',
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 17,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Text(
+                                            e.nome,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Text(
+                                            'R\$ ${e.valor}',
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 17,
+                                              color: Colors.blueGrey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                      const SizedBox(height: 40),
                     ],
                   ),
                 ),
@@ -205,6 +291,7 @@ class _MainScreenState extends State<MainScreen> {
             child: Container(
               color: Colors.white,
               child: const SafeArea(
+                top: false,
                 child: Row(
                   children: [
                     _BottomBarItem(Icons.home),
