@@ -108,103 +108,117 @@ class _MainScreenState extends State<MainScreen> {
                         margin: const EdgeInsets.only(top: 30),
                         width: double.infinity,
                         height: _BEBIDA_CONTAINER_SIZE + _BEBIDA_DESCRICAO_HEIGHT + _BEBIDA_DESCRICAO_MARGIN_BOTTOM,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: _categoriaAtualBebidas.length,
-                          itemBuilder: (context, index) {
-                            final bebida = _categoriaAtualBebidas[index];
-                            return InkWell(
-                              onTap: () => _irParaDetalhes(bebida),
-                              child: Container(
-                                width: _fractionSize,
-                                margin: const EdgeInsets.symmetric(horizontal: 10),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    SizedBox(
-                                      height: _BEBIDA_CONTAINER_SIZE,
-                                      child: Stack(
+                        child: _categoriaAtualBebidas.isEmpty
+                            ? Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text(
+                                    'A categoria ${_categoriaAtual.nome} não possui nenhuma bebida disponível no momento.',
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      color: Colors.blueGrey,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: _categoriaAtualBebidas.length,
+                                itemBuilder: (context, index) {
+                                  final bebida = _categoriaAtualBebidas[index];
+                                  return InkWell(
+                                    onTap: () => _irParaDetalhes(bebida),
+                                    child: Container(
+                                      width: _fractionSize,
+                                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Positioned(
-                                            bottom: 0,
-                                            child: Container(
-                                              height: _fractionSize,
-                                              width: _fractionSize,
-                                              decoration: BoxDecoration(
-                                                color: bebida.cor.withOpacity(0.4),
-                                                borderRadius: const BorderRadius.only(
-                                                  topLeft: Radius.circular(15),
-                                                  topRight: Radius.circular(15),
+                                          SizedBox(
+                                            height: _BEBIDA_CONTAINER_SIZE,
+                                            child: Stack(
+                                              children: [
+                                                Positioned(
+                                                  bottom: 0,
+                                                  child: Container(
+                                                    height: _fractionSize,
+                                                    width: _fractionSize,
+                                                    decoration: BoxDecoration(
+                                                      color: bebida.cor.withOpacity(0.4),
+                                                      borderRadius: const BorderRadius.only(
+                                                        topLeft: Radius.circular(15),
+                                                        topRight: Radius.circular(15),
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
+                                                Container(
+                                                  width: _fractionSize,
+                                                  height: _fractionSize,
+                                                  margin: const EdgeInsets.only(bottom: 20),
+                                                  child: Hero(tag: BebidaUtils.createBebidaTag(bebida), child: Image.network(bebida.imagem)),
+                                                )
+                                              ],
                                             ),
                                           ),
                                           Container(
-                                            width: _fractionSize,
-                                            height: _fractionSize,
-                                            margin: const EdgeInsets.only(bottom: 20),
-                                            child: Hero(tag: BebidaUtils.createBebidaTag(bebida), child: Image.network(bebida.imagem)),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      height: _BEBIDA_DESCRICAO_HEIGHT,
-                                      margin: const EdgeInsets.only(bottom: _BEBIDA_DESCRICAO_MARGIN_BOTTOM),
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        boxShadow: kElevationToShadow[4],
-                                        borderRadius: const BorderRadius.only(
-                                          bottomLeft: Radius.circular(15),
-                                          bottomRight: Radius.circular(15),
-                                        ),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Expanded(
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(left: 10, top: 5),
-                                              child: Row(
-                                                children: List.generate(
-                                                  QUANTIDADE_ESTRELAS_NOTA,
-                                                  (index) => Icon(
-                                                    Icons.star,
-                                                    color: bebida.nota > (VALOR_MAXIMO_PARA_NOTA / QUANTIDADE_ESTRELAS_NOTA) * index + 1
-                                                        ? Colors.yellow
-                                                        : Colors.grey.withOpacity(0.5),
-                                                  ),
-                                                ).toList(),
+                                            height: _BEBIDA_DESCRICAO_HEIGHT,
+                                            margin: const EdgeInsets.only(bottom: _BEBIDA_DESCRICAO_MARGIN_BOTTOM),
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              boxShadow: kElevationToShadow[4],
+                                              borderRadius: const BorderRadius.only(
+                                                bottomLeft: Radius.circular(15),
+                                                bottomRight: Radius.circular(15),
                                               ),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10, right: 10, top: 20),
-                                            child: Text(
-                                              bebida.nome,
-                                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 20),
-                                            child: Text(
-                                              "R\$ ${bebida.valor}",
-                                              style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
-                                              overflow: TextOverflow.ellipsis,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.only(left: 10, top: 5),
+                                                    child: Row(
+                                                      children: List.generate(
+                                                        QUANTIDADE_ESTRELAS_NOTA,
+                                                        (index) => Icon(
+                                                          Icons.star,
+                                                          color: bebida.nota > (VALOR_MAXIMO_PARA_NOTA / QUANTIDADE_ESTRELAS_NOTA) * index + 1
+                                                              ? Colors.yellow
+                                                              : Colors.grey.withOpacity(0.5),
+                                                        ),
+                                                      ).toList(),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left: 10, right: 10, top: 20),
+                                                  child: Text(
+                                                    bebida.nome,
+                                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 20),
+                                                  child: Text(
+                                                    "R\$ ${bebida.valor}",
+                                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  );
+                                },
                               ),
-                            );
-                          },
-                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
