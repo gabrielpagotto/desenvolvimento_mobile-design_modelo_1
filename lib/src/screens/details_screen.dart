@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mobile_modelo_1/src/data/bebida.dart';
 import 'package:mobile_modelo_1/src/data/categoria.dart';
 import 'package:mobile_modelo_1/src/mock/categoria_mock.dart';
@@ -38,22 +39,45 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   @override
+  void initState() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final size = mediaQuery.size;
     return Material(
-      color: Colors.black,
       child: Stack(
         children: [
           Column(
             children: [
-              Container(
-                height: size.height * .5,
-                color: Colors.black,
+              Positioned(
+                top: 0,
+                right: 0,
+                left: 0,
+                child: Container(
+                  height: size.height * .5,
+                  width: double.infinity,
+                  color: Colors.black,
+                ),
               ),
-              Container(
-                height: size.height * .5,
-                color: Colors.white,
+              Positioned(
+                bottom: 0,
+                right: 0,
+                left: 0,
+                child: Container(
+                  height: size.height * .5,
+                  width: double.infinity,
+                  color: Colors.white,
+                ),
               ),
             ],
           ),
